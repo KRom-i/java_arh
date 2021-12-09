@@ -1,25 +1,25 @@
+package server;
 
-import java.io.BufferedReader;
+import handler.HandlerRequest;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class WebServer {
 
-    private static String WWW = "Lesson_1/src/main/resources/static";
+    private int port;
 
-    public static void main (String[] args) {
+    public WebServer (int port) {
+        this.port = port;
+    }
 
-        try (ServerSocket serverSocket = new ServerSocket (8080)) {
+    public void start(){
+
+        try (ServerSocket serverSocket = new ServerSocket (port)) {
 
             System.out.println ("Server started!");
+            System.out.println ("Port: " + port);
 
             while (true) {
 
@@ -27,61 +27,14 @@ public class WebServer {
 
                 System.out.println ("New client connected!");
 
-                new Thread (() -> handleRequest (socket)).start ();
+                new Thread (new HandlerRequest (socket)).start ();
             }
         } catch (IOException e) {
             e.printStackTrace ();
         }
     }
 
-    private static void handleRequest (Socket socket) {
-
-        try (BufferedReader input = new BufferedReader (
-                new InputStreamReader (socket.getInputStream (), StandardCharsets.UTF_8));
-
-             PrintWriter output = new PrintWriter (socket.getOutputStream ())
-        ) {
-
-            while (!input.ready ());
-
-            String firstLine = input.readLine ();
-
-            String[] parts = firstLine.split (" ");
-
-            System.out.println (firstLine);
-
-            while (input.ready ()) {
-
-                System.out.println (input.readLine ());
-            }
-
-            if (parts[1].equals ("/")){
-                parts[1] = "index.html";
-            }
-
-            Path resource = Paths.get (WebServer.class.getResource ("static").toURI());
-            Path path = Paths.get (resource.toString (), parts[1]);
-
-            if (!Files.exists (path)) {
-                output.println ("HTTP/1.1 404 NOT_FOUND");
-                output.println ("Content-Type: text/html; charset=utf-8");
-                output.println ();
-                output.println ("<h1>Файл не найден!</h1>");
-                output.flush ();
-                return;
-            }
-
-            output.println ("HTTP/1.1 200 OK");
-            output.println ("Content-Type: text/html; charset=utf-8");
-            output.println ();
-
-            Files.newBufferedReader (path).transferTo (output);
 
 
-            System.out.println ("Client disconnected!");
 
-        } catch (Exception e) {
-            e.printStackTrace ();
-        }
-    }
 }
