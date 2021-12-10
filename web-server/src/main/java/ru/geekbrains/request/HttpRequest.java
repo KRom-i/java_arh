@@ -1,10 +1,12 @@
 package ru.geekbrains.request;
 
+import ru.geekbrains.response.ContentType;
+
 import java.util.Map;
 
 public class HttpRequest {
 
-    private final String method;
+    private final RequestMethod method;
 
     private final String url;
 
@@ -12,14 +14,14 @@ public class HttpRequest {
 
     private final String body;
 
-    public HttpRequest(String method, String url, Map<String, String> headers, String body) {
+    public HttpRequest (RequestMethod method, String url, Map<String, String> headers, String body) {
         this.method = method;
         this.url = url;
         this.headers = headers;
         this.body = body;
     }
 
-    public String getMethod() {
+    public RequestMethod getMethod() {
         return method;
     }
 
