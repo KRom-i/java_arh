@@ -6,5 +6,63 @@
 </head>
 <body>
 <h2>Test</h2>
+<div id="root"></div>
+<script>
+    class ElementBilder {
+
+        element;
+
+        constructor (tagName) {
+            this.element = document.createElement(tagName)
+        }
+
+        id(value) {
+            this.element.setAttribute("id", value)
+            return this
+        }
+
+        className(value) {
+            this.element.setAttribute("class", value)
+            return this
+        }
+
+        type(value) {
+            this.element.setAttribute("type", value)
+            return this
+        }
+
+        append(...elements) {
+            elements.forEach(element => this.element.append(element))
+            return this
+        }
+
+        addEvent(type, event){
+            this.element.addEventListener(type, ev => event(this.element.value))
+            return this
+        }
+
+        el() {
+            return this.element
+        }
+
+
+    }
+
+
+
+    const div = new ElementBilder("div").id("id").className("className").append(
+        new ElementBilder("input").className("className").type("text").addEvent("click", log).addEvent("input", log).el(),
+        new ElementBilder("input").className("className").type("text").addEvent("click", log).addEvent("input", log).el(),
+        new ElementBilder("input").className("className").type("text").addEvent("click", log).addEvent("input", log).el()
+    ).el()
+
+    const root = document.getElementById("root")
+    root.append(div)
+
+    function log (){
+        console.log('value')
+    }
+
+</script>
 </body>
 </html>
