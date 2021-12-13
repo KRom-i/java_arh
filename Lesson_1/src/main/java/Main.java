@@ -18,4 +18,11 @@ public class Main {
         GET, POST, PUT, DELETE;
 
     }
+
+
+    public static void main (String[] args) {
+
+        System.out.print ("STRING_1 " + System.lineSeparator () + "STRING_2 STRING_3");
+
+    }
 }
