@@ -1,10 +1,9 @@
 package ru.geekbrains;
 
 import ru.geekbrains.config.Config;
-import ru.geekbrains.config.ConfigFactory;
+import ru.geekbrains.controller.ControllerFactory;
+import ru.geekbrains.handler.RequestHandlerFactory;
 import ru.geekbrains.request.RequestParser;
-import ru.geekbrains.response.FileResponse;
-import ru.geekbrains.response.ResponseBilder;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,14 +12,10 @@ import java.net.Socket;
 public class WebServer {
 
     private final RequestParser requestParser;
-    private final ResponseBilder responseBilder;
-    private final FileResponse fileResponse;
     private final Config config;
 
-    public WebServer (Config config) {
+    private WebServer (Config config) {
         this.requestParser = new RequestParser ();
-        this.responseBilder = new ResponseBilder (config);
-        this.fileResponse = new FileResponse (config);
         this.config = config;
     }
 
@@ -33,21 +28,17 @@ public class WebServer {
                 System.out.println ("New client connected!");
 
                 new Thread (
-                        new RequestHandler (
-                                new SocketService (socket),
-                                requestParser,
-                                responseBilder,
-                                fileResponse)
-                ).start ();
+                        RequestHandlerFactory.createRequestHandler (
+                        socket, requestParser, ControllerFactory.createControllers (config)
+                )).start ();
             }
         } catch (IOException e) {
             e.printStackTrace ();
         }
     }
 
-    public static void main (String[] args) {
-        Config config = ConfigFactory.create (args);
-        new WebServer (config).start ();
+    public static WebServer create(Config config){
+        return new WebServer (config);
     }
 
 }

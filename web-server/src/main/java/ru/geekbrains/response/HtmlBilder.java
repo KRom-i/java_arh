@@ -50,5 +50,8 @@ public class HtmlBilder {
         return line;
     }
 
+    public static HtmlBilder create () {
+        return new HtmlBilder ();
+    }
 
 }
