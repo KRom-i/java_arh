@@ -8,7 +8,11 @@ import java.nio.file.Path;
 
 public class FileResponse {
 
-    private final static String PATH = Config.getStringValue ("www.path");
+    private final Config config;
+
+    public FileResponse (Config config) {
+        this.config = config;
+    }
 
     public boolean exists (String url){
         return Files.exists (getPath (url));
@@ -23,7 +27,7 @@ public class FileResponse {
     }
 
     public Path getPath(String url){
-        return Path.of (PATH,  url);
+        return Path.of (config.getWwwHome (),  url);
     }
 
 }
