@@ -43,7 +43,6 @@ public class WebServer {
         }
     }
 
-
     public static WebServer create (Config config) {
         return new WebServer (config);
     }
