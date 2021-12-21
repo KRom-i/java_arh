@@ -1,25 +1,23 @@
 package ru.geekbrains;
 
 import ru.geekbrains.config.Config;
-import ru.geekbrains.controller.Controller;
 import ru.geekbrains.controller.ControllerFactory;
 import ru.geekbrains.handler.RequestHandlerFactory;
-import ru.geekbrains.request.RequestParser;
+import ru.geekbrains.service.RequestParserImpl;
 import ru.geekbrains.service.FileServiceFactory;
 import ru.geekbrains.service.SocketServiceFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collection;
 
 public class WebServer {
 
-    private final RequestParser requestParser;
+    private final RequestParserImpl requestParser;
     private final Config config;
 
     private WebServer (Config config) {
-        this.requestParser = new RequestParser ();
+        this.requestParser = new RequestParserImpl ();
         this.config = config;
     }
 

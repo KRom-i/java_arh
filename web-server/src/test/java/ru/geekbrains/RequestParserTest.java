@@ -3,14 +3,14 @@ package ru.geekbrains;
 import org.junit.Assert;
 import org.junit.Test;
 import ru.geekbrains.request.HttpRequest;
-import ru.geekbrains.request.RequestParser;
+import ru.geekbrains.service.RequestParserImpl;
 
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class RequestParserTest {
 
-    private final RequestParser parser = new RequestParser ();
+    private final RequestParserImpl parser = new RequestParserImpl ();
 
     @Test
     public void testSimpleRequest() {

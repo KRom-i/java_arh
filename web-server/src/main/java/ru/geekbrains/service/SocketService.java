@@ -2,10 +2,8 @@ package ru.geekbrains.service;
 
 import ru.geekbrains.response.HttpResponse;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.Closeable;
 import java.util.Deque;
-import java.util.LinkedList;
 
 public interface SocketService extends Closeable {
 

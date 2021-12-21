@@ -3,7 +3,7 @@ package ru.geekbrains.handler;
 import ru.geekbrains.service.SocketService;
 import ru.geekbrains.controller.Controller;
 import ru.geekbrains.request.HttpRequest;
-import ru.geekbrains.request.RequestParser;
+import ru.geekbrains.service.RequestParserImpl;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -11,11 +11,11 @@ import java.util.Deque;
 class RequestHandlerImpl implements RequestHandler {
 
     private final SocketService socketService;
-    private final RequestParser requestParser;
+    private final RequestParserImpl requestParser;
     private final Collection<Controller> controllers;
 
     RequestHandlerImpl (SocketService socketService,
-                               RequestParser requestParser,
+                               RequestParserImpl requestParser,
                                Collection<Controller> controllers) {
         this.socketService = socketService;
         this.requestParser = requestParser;
