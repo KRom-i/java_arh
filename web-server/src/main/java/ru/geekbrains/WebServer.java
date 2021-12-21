@@ -25,6 +25,7 @@ public class WebServer {
 
         try (ServerSocket serverSocket = new ServerSocket (config.getPort ())) {
             System.out.printf ("Server started. Port: %s.\n", config.getPort ());
+
             while (true) {
                 Socket socket = serverSocket.accept ();
                 System.out.println ("New client connected!");
@@ -43,6 +44,7 @@ public class WebServer {
             e.printStackTrace ();
         }
     }
+
 
     public static WebServer create (Config config) {
         return new WebServer (config);

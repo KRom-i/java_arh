@@ -11,7 +11,7 @@ public class HtmlPage {
 
     private byte[] body;
 
-    HtmlPage () {
+    private HtmlPage () {
     }
 
     public byte[] getBody(){
@@ -30,7 +30,7 @@ public class HtmlPage {
 
         private Path path;
 
-        Builder () {
+        private Builder () {
             this.contentHtml = new HtmlPage ();
         }
 
