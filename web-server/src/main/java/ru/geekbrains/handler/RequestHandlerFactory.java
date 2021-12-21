@@ -1,17 +1,19 @@
 package ru.geekbrains.handler;
 
-import ru.geekbrains.service.SocketService;
 import ru.geekbrains.controller.Controller;
-import ru.geekbrains.service.RequestParserImpl;
+import ru.geekbrains.service.RequestParser;
+import ru.geekbrains.service.ResponseSerializer;
+import ru.geekbrains.service.SocketService;
 
 import java.util.Collection;
 
 public class RequestHandlerFactory {
 
     public static RequestHandler createRequestHandler (SocketService socketService,
-                                                           RequestParserImpl requestParser,
-                                                           Collection<Controller> controllers) {
+                                                       RequestParser requestParser,
+                                                       ResponseSerializer responseSerializer,
+                                                       Collection<Controller> controllers) {
 
-        return new RequestHandlerImpl (socketService, requestParser, controllers);
+        return new RequestHandlerImpl (socketService, requestParser, responseSerializer, controllers);
     }
 }

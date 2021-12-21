@@ -2,25 +2,23 @@ package ru.geekbrains.response;
 
 public class HttpResponse {
 
-    private String header;
+
+    private HttpStatus status;
+    private ContentType contentType;
     private byte[] body;
 
     private HttpResponse(){}
 
-    public String getHeader () {
-        return header;
+    public HttpStatus getStatus () {
+        return status;
     }
 
-    public void setHeader (String header) {
-        this.header = header;
+    public ContentType getContentType () {
+        return contentType;
     }
 
     public byte[] getBody () {
         return body;
-    }
-
-    public void setBody (byte[] body) {
-        this.body = body;
     }
 
     public static Builder createBuilder(){
@@ -32,16 +30,21 @@ public class HttpResponse {
         private final HttpResponse httpResponse;
 
         private Builder(){
-            this.httpResponse = new HttpResponse ();
+            httpResponse = new HttpResponse ();
         }
 
-        public Builder withHeader(String header){
-            this.httpResponse.header = header;
+        public Builder withStatus(HttpStatus status){
+            httpResponse.status = status;
+            return this;
+        }
+
+        public Builder withContentType(ContentType contentType){
+            httpResponse.contentType = contentType;
             return this;
         }
 
         public Builder withBody(byte[] body){
-            this.httpResponse.body = body;
+            httpResponse.body = body;
             return this;
         }
 

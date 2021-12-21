@@ -1,10 +1,12 @@
 package ru.geekbrains;
 
 import ru.geekbrains.config.Config;
+import ru.geekbrains.config.ConfigFactory;
 import ru.geekbrains.controller.ControllerFactory;
 import ru.geekbrains.handler.RequestHandlerFactory;
-import ru.geekbrains.service.RequestParserImpl;
 import ru.geekbrains.service.FileServiceFactory;
+import ru.geekbrains.service.RequestParserFactory;
+import ru.geekbrains.service.ResponseSerializerFactory;
 import ru.geekbrains.service.SocketServiceFactory;
 
 import java.io.IOException;
@@ -13,11 +15,9 @@ import java.net.Socket;
 
 public class WebServer {
 
-    private final RequestParserImpl requestParser;
     private final Config config;
 
     private WebServer (Config config) {
-        this.requestParser = new RequestParserImpl ();
         this.config = config;
     }
 
@@ -32,8 +32,11 @@ public class WebServer {
                 new Thread (
                         RequestHandlerFactory.createRequestHandler (
                                 SocketServiceFactory.createSocketService (socket),
-                                requestParser,
-                                ControllerFactory.createControllers (config, FileServiceFactory.createFileService (config))
+                                RequestParserFactory.createRequestParser (),
+                                ResponseSerializerFactory.createResponseSerializer (config),
+                                ControllerFactory.createControllers (
+                                        FileServiceFactory.createFileService (config)
+                                )
                         )).start ();
             }
         } catch (IOException e) {
@@ -45,4 +48,7 @@ public class WebServer {
         return new WebServer (config);
     }
 
+    public static void main (String[] args) {
+        WebServer.create (ConfigFactory.create (args)).start ();
+    }
 }

@@ -8,20 +8,12 @@ import ru.geekbrains.service.FileService;
 public class Controller {
 
     RequestMethod method;
-
-    ResponseBilder responseBilder;
-
     FileService fileService;
 
-    public Controller (RequestMethod method, ResponseBilder responseBilder, FileService fileService) {
+    public Controller (RequestMethod method, FileService fileService) {
         this.method = method;
-        this.responseBilder = responseBilder;
         this.fileService = fileService;
 
-    }
-
-    HttpResponse creteResponse(HttpStatus httpStatus, ContentType contentType, byte[] body){
-        return responseBilder.getResponse (httpStatus, contentType, body);
     }
 
     public HttpResponse getHttpResponse (HttpRequest httpRequest) {
@@ -32,11 +24,19 @@ public class Controller {
         return method;
     }
 
-    HttpResponse getMessage (HttpStatus httpStatus, String msg) {
-        byte[] body = HtmlBilder.create ()
-                .addAttribute ("message", msg)
-                .getBody (fileService.getPath ("message-page.html"));
-        return responseBilder.getResponse (httpStatus, ContentType.HTML, body);
+    HttpResponse createMessage (HttpStatus httpStatus, String msg) {
+
+        byte[] body = HtmlPage.createBilder ()
+                .withPath (fileService.getPath ("message-page.html"))
+                .withAttribute ("message", msg)
+                .build ()
+                .getBody ();
+
+        return HttpResponse.createBuilder ()
+                .withStatus (httpStatus)
+                .withContentType (ContentType.HTML)
+                .withBody (body)
+                .build ();
     }
 
 

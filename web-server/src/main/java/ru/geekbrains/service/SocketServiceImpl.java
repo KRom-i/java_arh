@@ -5,6 +5,7 @@ import ru.geekbrains.response.HttpResponse;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -36,18 +37,10 @@ class SocketServiceImpl implements SocketService {
         }
     }
 
-    public void writeResponse (HttpResponse httpResponse) {
-        try (
-                OutputStream output = socket.getOutputStream ();
-                PrintWriter outputPrint = new PrintWriter (output);
-        ) {
-
-            outputPrint.print (httpResponse.getHeader ());
-            outputPrint.flush ();
-
-            output.write (httpResponse.getBody ());
+    public void writeResponse (byte[] response) {
+        try (OutputStream output = socket.getOutputStream ();) {
+            output.write (response);
             output.flush ();
-
         } catch (IOException e) {
             throw new IllegalStateException (e);
         }

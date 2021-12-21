@@ -1,9 +1,11 @@
 package ru.geekbrains.handler;
 
+import ru.geekbrains.response.HttpResponse;
+import ru.geekbrains.service.ResponseSerializer;
 import ru.geekbrains.service.SocketService;
 import ru.geekbrains.controller.Controller;
 import ru.geekbrains.request.HttpRequest;
-import ru.geekbrains.service.RequestParserImpl;
+import ru.geekbrains.service.RequestParser;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -11,14 +13,18 @@ import java.util.Deque;
 class RequestHandlerImpl implements RequestHandler {
 
     private final SocketService socketService;
-    private final RequestParserImpl requestParser;
+    private final RequestParser requestParser;
+    private final ResponseSerializer responseSerializer;
     private final Collection<Controller> controllers;
 
     RequestHandlerImpl (SocketService socketService,
-                               RequestParserImpl requestParser,
-                               Collection<Controller> controllers) {
+                        RequestParser requestParser,
+                        ResponseSerializer responseSerializer,
+                        Collection<Controller> controllers) {
+
         this.socketService = socketService;
         this.requestParser = requestParser;
+        this.responseSerializer = responseSerializer;
         this.controllers = controllers;
     }
 
@@ -29,7 +35,9 @@ class RequestHandlerImpl implements RequestHandler {
 
         for (Controller controller : controllers) {
             if (controller.getRequestMethod ().equals (httpRequest.getMethod ())) {
-                socketService.writeResponse (controller.getHttpResponse (httpRequest));
+                HttpResponse httpResponse = controller.getHttpResponse (httpRequest);
+                byte[] response = responseSerializer.serialize (httpResponse);
+                socketService.writeResponse (response);
                 break;
             }
         }

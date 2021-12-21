@@ -7,7 +7,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestParserImpl {
+class RequestParserImpl implements RequestParser{
 
     public HttpRequest parseRequest(Deque<String> rawRequest) {
         String[] firstLine = rawRequest.pollFirst().split(" ");

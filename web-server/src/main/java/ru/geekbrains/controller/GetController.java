@@ -7,19 +7,25 @@ import ru.geekbrains.service.FileService;
 
 class GetController extends Controller {
 
-    public GetController (RequestMethod method, ResponseBilder responseBilder, FileService fileService) {
-        super (method, responseBilder, fileService);
+    public GetController (RequestMethod method, FileService fileService) {
+        super (method, fileService);
     }
 
     @Override
     public HttpResponse getHttpResponse (HttpRequest httpRequest) {
         String url = httpRequest.getUrl ();
+
         if (fileService.exists (url)) {
             ContentType contentType = ContentTypeParser.parse (fileService.getPath (url));
             byte[] body = fileService.getBytes (url);
-            return creteResponse (HttpStatus.OK, contentType, body);
+
+            return HttpResponse.createBuilder ()
+                    .withStatus (HttpStatus.OK)
+                    .withContentType (contentType)
+                    .withBody (body)
+                    .build ();
         }
-        return getMessage (HttpStatus.NOT_FOUND, url + " - ссылка не найдена");
+        return createMessage (HttpStatus.NOT_FOUND, url + " - ссылка не найдена");
     }
 
 }
