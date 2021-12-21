@@ -1,24 +1,18 @@
 package ru.geekbrains.request;
 
-import ru.geekbrains.response.ContentType;
-
 import java.util.Map;
 
 public class HttpRequest {
 
-    private final RequestMethod method;
+    private RequestMethod method;
 
-    private final String url;
+    private String url;
 
-    private final Map<String, String> headers;
+    private Map<String, String> headers;
 
-    private final String body;
+    private String body;
 
-    public HttpRequest (RequestMethod method, String url, Map<String, String> headers, String body) {
-        this.method = method;
-        this.url = url;
-        this.headers = headers;
-        this.body = body;
+    private HttpRequest () {
     }
 
     public RequestMethod getMethod() {
@@ -37,6 +31,10 @@ public class HttpRequest {
         return body;
     }
 
+    public static Builder createBuilder(){
+        return new Builder ();
+    }
+
     @Override
     public String toString() {
         return "HttpRequest{" +
@@ -45,5 +43,38 @@ public class HttpRequest {
                 ", headers=" + headers +
                 ", body='" + body + '\'' +
                 '}';
+    }
+
+    public static class Builder{
+
+        private final HttpRequest httpRequest;
+
+        private Builder () {
+            this.httpRequest = new HttpRequest ();
+        }
+
+        public Builder withMethod(RequestMethod method){
+            this.httpRequest.method = method;
+            return this;
+        }
+
+        public Builder withUrl(String url){
+            this.httpRequest.url = url;
+            return this;
+        }
+
+        public Builder withHeaders(Map<String, String> headers){
+            this.httpRequest.headers = headers;
+            return this;
+        }
+
+        public Builder withBody(String body){
+            this.httpRequest.body = body;
+            return this;
+        }
+
+        public HttpRequest build(){
+            return this.httpRequest;
+        }
     }
 }

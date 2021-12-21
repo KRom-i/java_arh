@@ -10,9 +10,8 @@ public class ResponseBilder {
         this.config = config;
     }
 
-    public HttpResponse getResponse (HttpStatus status, ContentType contentType, byte[] body) {
 
-        HttpResponse httpResponse = new HttpResponse ();
+    public HttpResponse getResponse (HttpStatus status, ContentType contentType, byte[] body) {
 
         StringBuilder header = new StringBuilder ();
 
@@ -27,10 +26,9 @@ public class ResponseBilder {
                 .append (config.getHttpCharset ())
                 .append ("\n\n");
 
-        httpResponse.setHeader (header.toString ());
-
-        httpResponse.setBody (body);
-
-        return httpResponse;
+        return HttpResponse.createBuilder ()
+                .withHeader (header.toString ())
+                .withBody (body)
+                .build ();
     }
 }

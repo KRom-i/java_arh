@@ -8,7 +8,7 @@ public class RequestParser {
 
     public HttpRequest parseRequest(Deque<String> rawRequest) {
         String[] firstLine = rawRequest.pollFirst().split(" ");
-        String method = firstLine[0];
+        RequestMethod method = RequestMethod.valueOf (firstLine[0]);
         String url = urlParse(firstLine[1]);
 
         Map<String, String> headers = new HashMap<>();
@@ -25,7 +25,12 @@ public class RequestParser {
             body.append(rawRequest.pollFirst());
         }
 
-        return new HttpRequest(RequestMethod.valueOf (method), url, headers, body.toString());
+        return HttpRequest.createBuilder ()
+                .withMethod (method)
+                .withUrl (url)
+                .withHeaders (headers)
+                .withBody (body.toString ())
+                .build ();
     }
 
     private String urlParse(String url){
