@@ -4,10 +4,7 @@ import ru.geekbrains.config.Config;
 import ru.geekbrains.config.ConfigFactory;
 import ru.geekbrains.controller.ControllerFactory;
 import ru.geekbrains.handler.RequestHandlerFactory;
-import ru.geekbrains.service.FileServiceFactory;
-import ru.geekbrains.service.RequestParserFactory;
-import ru.geekbrains.service.ResponseSerializerFactory;
-import ru.geekbrains.service.SocketServiceFactory;
+import ru.geekbrains.service.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -36,7 +33,8 @@ public class WebServer {
                                 RequestParserFactory.createRequestParser (),
                                 ResponseSerializerFactory.createResponseSerializer (config),
                                 ControllerFactory.createControllers (
-                                        FileServiceFactory.createFileService (config)
+                                        FileServiceFactory.createFileService (config),
+                                        ContentTypeParserFactory.createContentTypeParser ()
                                 )
                         )).start ();
             }

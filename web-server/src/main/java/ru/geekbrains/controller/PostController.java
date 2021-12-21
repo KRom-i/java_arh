@@ -8,12 +8,13 @@ import ru.geekbrains.response.ContentType;
 import ru.geekbrains.response.HtmlPage;
 import ru.geekbrains.response.HttpResponse;
 import ru.geekbrains.response.HttpStatus;
+import ru.geekbrains.service.ContentTypeParser;
 import ru.geekbrains.service.FileService;
 
 class PostController extends Controller {
 
-    public PostController (RequestMethod method, FileService fileService) {
-        super (method, fileService);
+    public PostController (RequestMethod method, FileService fileService, ContentTypeParser contentTypeParser) {
+        super (method, fileService, contentTypeParser);
     }
 
     @Override

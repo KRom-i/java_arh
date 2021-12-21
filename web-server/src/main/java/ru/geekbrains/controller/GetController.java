@@ -3,12 +3,13 @@ package ru.geekbrains.controller;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
 import ru.geekbrains.response.*;
+import ru.geekbrains.service.ContentTypeParser;
 import ru.geekbrains.service.FileService;
 
 class GetController extends Controller {
 
-    public GetController (RequestMethod method, FileService fileService) {
-        super (method, fileService);
+    public GetController (RequestMethod method, FileService fileService, ContentTypeParser contentTypeParser) {
+        super (method, fileService, contentTypeParser);
     }
 
     @Override
@@ -16,7 +17,8 @@ class GetController extends Controller {
         String url = httpRequest.getUrl ();
 
         if (fileService.exists (url)) {
-            ContentType contentType = ContentTypeParser.parse (fileService.getPath (url));
+
+            ContentType contentType = contentTypeParser.parse (fileService.getPath (url));
             byte[] body = fileService.getBytes (url);
 
             return HttpResponse.createBuilder ()

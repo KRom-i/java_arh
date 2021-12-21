@@ -3,16 +3,19 @@ package ru.geekbrains.controller;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
 import ru.geekbrains.response.*;
+import ru.geekbrains.service.ContentTypeParser;
 import ru.geekbrains.service.FileService;
 
 public class Controller {
 
     RequestMethod method;
     FileService fileService;
+    ContentTypeParser contentTypeParser;
 
-    public Controller (RequestMethod method, FileService fileService) {
+    public Controller (RequestMethod method, FileService fileService, ContentTypeParser contentTypeParser) {
         this.method = method;
         this.fileService = fileService;
+        this.contentTypeParser = contentTypeParser;
 
     }
 

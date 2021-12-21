@@ -2,7 +2,11 @@ package ru.geekbrains.response;
 
 public enum ContentType {
 
-    HTML("text/html"), JPG("image/jpeg"), JSON("application/json");
+    HTML("text/html"),
+    JPG("image/jpeg"),
+    JSON("application/json"),
+    JS("application/javascript"),
+    CSS("text/css");
 
     private String type;
 

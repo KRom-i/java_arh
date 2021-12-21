@@ -1,11 +1,14 @@
-package ru.geekbrains.response;
+package ru.geekbrains.service;
+
+import ru.geekbrains.response.ContentType;
 
 import java.nio.file.Path;
 import java.util.Locale;
 
-public class ContentTypeParser {
+class ContentTypeParserImpl implements ContentTypeParser {
 
-    public static ContentType parse(Path path){
+    @Override
+    public ContentType parse (Path path) {
         String filename = path.getFileName ().toString ();
         String extension = filename.split ("\\.")[1];
         String type = extension.toUpperCase(Locale.ROOT);
