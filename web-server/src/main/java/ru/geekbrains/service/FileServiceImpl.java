@@ -1,4 +1,4 @@
-package ru.geekbrains.response;
+package ru.geekbrains.service;
 
 import ru.geekbrains.config.Config;
 
@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FileResponse {
+class FileServiceImpl implements FileService{
 
     private final Config config;
 
-    public FileResponse (Config config) {
+    public FileServiceImpl (Config config) {
         this.config = config;
     }
 

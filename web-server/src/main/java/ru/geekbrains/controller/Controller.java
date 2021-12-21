@@ -3,6 +3,7 @@ package ru.geekbrains.controller;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
 import ru.geekbrains.response.*;
+import ru.geekbrains.service.FileService;
 
 public class Controller {
 
@@ -10,12 +11,12 @@ public class Controller {
 
     ResponseBilder responseBilder;
 
-    FileResponse fileResponse;
+    FileService fileService;
 
-    public Controller (RequestMethod method, ResponseBilder responseBilder, FileResponse fileResponse) {
+    public Controller (RequestMethod method, ResponseBilder responseBilder, FileService fileService) {
         this.method = method;
         this.responseBilder = responseBilder;
-        this.fileResponse = fileResponse;
+        this.fileService = fileService;
 
     }
 
@@ -34,7 +35,7 @@ public class Controller {
     HttpResponse getMessage (HttpStatus httpStatus, String msg) {
         byte[] body = HtmlBilder.create ()
                 .addAttribute ("message", msg)
-                .getBody (fileResponse.getPath ("message-page.html"));
+                .getBody (fileService.getPath ("message-page.html"));
         return responseBilder.getResponse (httpStatus, ContentType.HTML, body);
     }
 

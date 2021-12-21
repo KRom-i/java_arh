@@ -3,8 +3,8 @@ package ru.geekbrains.response;
 public enum HttpStatus {
 
     OK (200, "OK"),
-    NOT_FOUND(404, "NOT_FOUND"),
-    METHOD_NOT_ALLOWED(405, "METHOD_NOT_ALLOWED");
+    NOT_FOUND(404, "NOT FOUND"),
+    METHOD_NOT_ALLOWED(405, "METHOD NOT ALLOWED");
 
     private int code;
     private String value;

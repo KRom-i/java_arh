@@ -5,11 +5,12 @@ import ru.geekbrains.entity.User;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
 import ru.geekbrains.response.*;
+import ru.geekbrains.service.FileService;
 
 class PostController extends Controller {
 
-    public PostController (RequestMethod method, ResponseBilder responseBilder, FileResponse fileResponse) {
-        super (method, responseBilder, fileResponse);
+    public PostController (RequestMethod method, ResponseBilder responseBilder, FileService fileService) {
+        super (method, responseBilder, fileService);
     }
 
     @Override
@@ -31,7 +32,7 @@ class PostController extends Controller {
                 .addAttribute ("firstName", user.getFirstName ())
                 .addAttribute ("email", user.getEmail ())
                 .addAttribute ("ega", String.valueOf (user.getAge ()))
-                .getBody (fileResponse.getPath ("user-info.html"));
+                .getBody (fileService.getPath ("user-info.html"));
 
         return creteResponse (HttpStatus.OK, ContentType.HTML, body);
     }

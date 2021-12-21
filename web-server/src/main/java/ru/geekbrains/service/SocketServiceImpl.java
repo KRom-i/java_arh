@@ -1,4 +1,4 @@
-package ru.geekbrains;
+package ru.geekbrains.service;
 
 import ru.geekbrains.response.HttpResponse;
 
@@ -8,11 +8,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Deque;
 import java.util.LinkedList;
 
-public class SocketService implements Closeable {
+class SocketServiceImpl implements SocketService {
 
     private final Socket socket;
 
-    public SocketService (Socket socket) {
+    SocketServiceImpl (Socket socket) {
         this.socket = socket;
     }
 
