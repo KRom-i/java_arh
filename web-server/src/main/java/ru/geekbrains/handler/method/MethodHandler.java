@@ -8,10 +8,7 @@ import ru.geekbrains.response.ContentType;
 import ru.geekbrains.response.HtmlPage;
 import ru.geekbrains.response.HttpResponse;
 import ru.geekbrains.response.HttpStatus;
-import ru.geekbrains.service.ContentTypeParser;
-import ru.geekbrains.service.ContentTypeParserFactory;
-import ru.geekbrains.service.FileService;
-import ru.geekbrains.service.FileServiceFactory;
+import ru.geekbrains.service.*;
 
 import java.lang.reflect.Method;
 
@@ -22,12 +19,14 @@ public abstract class MethodHandler {
     protected FileService fileService;
     protected ContentTypeParser contentTypeParser;
     protected UserRepository userRepository;
+    protected EntityParser entityParser;
 
     public MethodHandler (MethodHandler methodHandler) {
         this.next = methodHandler;
         this.fileService = FileServiceFactory.createFileService ();
         this.contentTypeParser = ContentTypeParserFactory.createContentTypeParser ();
         this.userRepository = UserRepositoryFactory.createUserRepository ();
+        this.entityParser = EntityParserFactory.createEntityParser ();
     }
 
     private RequestMethod getRequestMethod () {

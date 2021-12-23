@@ -1,6 +1,5 @@
 package ru.geekbrains.handler.method;
 
-import ru.geekbrains.entity.EntityParser;
 import ru.geekbrains.entity.User;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
@@ -8,8 +7,6 @@ import ru.geekbrains.response.ContentType;
 import ru.geekbrains.response.HtmlPage;
 import ru.geekbrains.response.HttpResponse;
 import ru.geekbrains.response.HttpStatus;
-
-import java.time.LocalDateTime;
 
 @Handle(method = RequestMethod.POST, order = 2)
 public class MethodHandlerPost extends MethodHandler {
@@ -26,7 +23,7 @@ public class MethodHandlerPost extends MethodHandler {
 
     @UrlRequest("/registration")
     private HttpResponse registration (HttpRequest httpRequest) {
-        User user = new EntityParser<> (new User ()).parseEntity (httpRequest.getBody ());
+        User user = (User) entityParser.parse (httpRequest.getBody (), User.class);
 
         byte[] body = HtmlPage.createBilder ()
                 .withPath (fileService.getPath ("user-info.html"))
