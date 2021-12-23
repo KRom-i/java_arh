@@ -1,5 +1,7 @@
 package ru.geekbrains.handler.method;
 
+import ru.geekbrains.repository.UserRepository;
+import ru.geekbrains.repository.UserRepositoryFactory;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
 import ru.geekbrains.response.ContentType;
@@ -19,12 +21,13 @@ public abstract class MethodHandler {
 
     protected FileService fileService;
     protected ContentTypeParser contentTypeParser;
-
+    protected UserRepository userRepository;
 
     public MethodHandler (MethodHandler methodHandler) {
         this.next = methodHandler;
         this.fileService = FileServiceFactory.createFileService ();
         this.contentTypeParser = ContentTypeParserFactory.createContentTypeParser ();
+        this.userRepository = UserRepositoryFactory.createUserRepository ();
     }
 
     private RequestMethod getRequestMethod () {

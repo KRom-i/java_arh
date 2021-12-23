@@ -10,7 +10,7 @@ public class ConfigFactory {
 
     public static Config create (String[] args) {
         if (args.length < COUNT_PARAMS) {
-            config =  new ConfigFromFile (FILE_NAME);
+            config =  new ConfigFileFromFile (FILE_NAME);
         } else {
             config = new ConfigFromCli (args);
         }
