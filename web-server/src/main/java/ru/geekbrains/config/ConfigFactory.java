@@ -6,12 +6,19 @@ public class ConfigFactory {
 
     private final static String FILE_NAME = "config.properties";
 
+    public static Config config;
+
     public static Config create (String[] args) {
         if (args.length < COUNT_PARAMS) {
-            return new ConfigFromFile (FILE_NAME);
+            config =  new ConfigFromFile (FILE_NAME);
         } else {
-            return new ConfigFromCli (args);
+            config = new ConfigFromCli (args);
         }
+        return config;
+    }
+
+    public static Config getConfig(){
+        return config;
     }
 
 

@@ -12,7 +12,7 @@ class RequestParserImpl implements RequestParser{
     public HttpRequest parseRequest(Deque<String> rawRequest) {
         String[] firstLine = rawRequest.pollFirst().split(" ");
         RequestMethod method = RequestMethod.valueOf (firstLine[0]);
-        String url = urlParse(firstLine[1]);
+        String url = firstLine[1];
 
         Map<String, String> headers = new HashMap<>();
         while (!rawRequest.isEmpty()) {
@@ -36,11 +36,5 @@ class RequestParserImpl implements RequestParser{
                 .build ();
     }
 
-    private String urlParse(String url){
-        if (url.equals ("/")){
-            return url + "index.html";
-        }
-        return url;
-    }
 
 }

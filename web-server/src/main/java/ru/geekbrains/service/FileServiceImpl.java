@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-class FileServiceImpl implements FileService{
+class FileServiceImpl implements FileService {
 
     private final Config config;
 
@@ -14,11 +14,12 @@ class FileServiceImpl implements FileService{
         this.config = config;
     }
 
-    public boolean exists (String url){
-        return Files.exists (getPath (url));
+    public boolean exists (String url) {
+        Path path = getPath (url);
+        return Files.exists (path) && !Files.isDirectory (path);
     }
 
-    public byte[] getBytes(String url){
+    public byte[] getBytes (String url) {
         try {
             return Files.readAllBytes (getPath (url));
         } catch (IOException e) {
@@ -26,8 +27,8 @@ class FileServiceImpl implements FileService{
         }
     }
 
-    public Path getPath(String url){
-        return Path.of (config.getWwwHome (),  url);
+    public Path getPath (String url) {
+        return Path.of (config.getWwwHome (), url);
     }
 
 }
