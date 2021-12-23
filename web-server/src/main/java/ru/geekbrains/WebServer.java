@@ -2,8 +2,8 @@ package ru.geekbrains;
 
 import ru.geekbrains.config.Config;
 import ru.geekbrains.config.ConfigFactory;
-import ru.geekbrains.controller.ControllerFactory;
-import ru.geekbrains.handler.RequestHandlerFactory;
+import ru.geekbrains.handler.method.MethodHandlerFactory;
+import ru.geekbrains.handler.request.RequestHandlerFactory;
 import ru.geekbrains.service.*;
 
 import java.io.IOException;
@@ -32,9 +32,8 @@ public class WebServer {
                                 SocketServiceFactory.createSocketService (socket),
                                 RequestParserFactory.createRequestParser (),
                                 ResponseSerializerFactory.createResponseSerializer (config),
-                                ControllerFactory.createControllers (
-                                        FileServiceFactory.createFileService (config),
-                                        ContentTypeParserFactory.createContentTypeParser ()
+                                MethodHandlerFactory.createMethodHandler (
+                                        ReflectionServiceFactory.createReflectionService ()
                                 )
                         )).start ();
             }

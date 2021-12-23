@@ -1,4 +1,4 @@
-package ru.geekbrains.controller;
+package ru.geekbrains.handler.method;
 
 import ru.geekbrains.entity.EntityParser;
 import ru.geekbrains.entity.User;
@@ -8,25 +8,21 @@ import ru.geekbrains.response.ContentType;
 import ru.geekbrains.response.HtmlPage;
 import ru.geekbrains.response.HttpResponse;
 import ru.geekbrains.response.HttpStatus;
-import ru.geekbrains.service.ContentTypeParser;
-import ru.geekbrains.service.FileService;
 
-class PostController extends Controller {
+@Handle(method = RequestMethod.POST, order = 2)
+public class MethodHandlerPost extends MethodHandler {
 
-    public PostController (RequestMethod method, FileService fileService, ContentTypeParser contentTypeParser) {
-        super (method, fileService, contentTypeParser);
+    public MethodHandlerPost (MethodHandler methodHandler) {
+        super (methodHandler);
     }
 
     @Override
-    public HttpResponse getHttpResponse (HttpRequest httpRequest) {
-        switch (httpRequest.getUrl ()) {
-            case "/registration":
-                return registrationProcessing (httpRequest);
-        }
-        return createMessage (HttpStatus.NOT_FOUND, httpRequest.getUrl () + " - ссылка не найдена");
+    HttpResponse handle (HttpRequest httpRequest) {
+        return methodsHandle (this, httpRequest);
     }
 
-    private HttpResponse registrationProcessing (HttpRequest httpRequest) {
+    @UrlRequest("/registration")
+    private HttpResponse registration (HttpRequest httpRequest) {
         User user = new EntityParser<> (new User ()).parseEntity (httpRequest.getBody ());
 
         byte[] body = HtmlPage.createBilder ()
