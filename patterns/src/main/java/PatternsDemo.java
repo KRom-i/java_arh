@@ -52,6 +52,8 @@ import structural.proxy.SecuredDoor;
 
 public class PatternsDemo {
 
+//   HW_5 https://github.com/KRom-i/java_arh/pull/5
+
     public static void main (String[] args) {
 
 //        creational ();
