@@ -9,10 +9,8 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>Lesson_1</module>
         <module>web-server</module>
         <module>patterns</module>
-        <module>reflection</module>
     </modules>
 
     <properties>
