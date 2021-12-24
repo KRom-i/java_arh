@@ -1,6 +1,7 @@
 package ru.geekbrains.request;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class HttpRequest {
 
@@ -11,6 +12,8 @@ public class HttpRequest {
     private Map<String, String> headers;
 
     private String body;
+
+    private Map<String, String> params;
 
     private HttpRequest () {
     }
@@ -33,6 +36,10 @@ public class HttpRequest {
 
     public static Builder createBuilder(){
         return new Builder ();
+    }
+
+    public String getParam (String key) {
+        return params.get (key);
     }
 
     @Override
@@ -70,6 +77,11 @@ public class HttpRequest {
 
         public Builder withBody(String body){
             this.httpRequest.body = body;
+            return this;
+        }
+
+        public Builder withParams(Map<String, String> params){
+            this.httpRequest.params = params;
             return this;
         }
 

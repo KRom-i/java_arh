@@ -1,9 +1,9 @@
 package ru.geekbrains.config;
 
-class ConfigFileFromFile extends AbstractConfigFile implements Config {
+class ConfigFromFile extends AbstractConfigFromFile implements Config {
 
 
-    public ConfigFileFromFile (String fileName) {
+    public ConfigFromFile (String fileName) {
         super (fileName);
     }
 

@@ -1,7 +1,8 @@
 package ru.geekbrains.handler.method;
 
-import ru.geekbrains.repository.UserRepository;
-import ru.geekbrains.repository.UserRepositoryFactory;
+import ru.geekbrains.entity.User;
+import ru.geekbrains.orm.Repository;
+import ru.geekbrains.orm.RepositoryFactory;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
 import ru.geekbrains.response.ContentType;
@@ -11,6 +12,8 @@ import ru.geekbrains.response.HttpStatus;
 import ru.geekbrains.service.*;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 public abstract class MethodHandler {
 
@@ -18,15 +21,17 @@ public abstract class MethodHandler {
 
     protected FileService fileService;
     protected ContentTypeParser contentTypeParser;
-    protected UserRepository userRepository;
+    protected Repository<User> userRepository;
     protected EntityParser entityParser;
+    protected JsonSerializer jsonSerializer;
 
     public MethodHandler (MethodHandler methodHandler) {
         this.next = methodHandler;
         this.fileService = FileServiceFactory.createFileService ();
         this.contentTypeParser = ContentTypeParserFactory.createContentTypeParser ();
-        this.userRepository = UserRepositoryFactory.createUserRepository ();
+        this.userRepository = RepositoryFactory.createUserRepository ();
         this.entityParser = EntityParserFactory.createEntityParser ();
+        this.jsonSerializer = JsonSerializerFactory.createJsonSerializer ();
     }
 
     private RequestMethod getRequestMethod () {
@@ -39,7 +44,7 @@ public abstract class MethodHandler {
         } else if (next != null) {
             return next.getHttpResponse (httpRequest);
         } else {
-            return createMessage (HttpStatus.METHOD_NOT_ALLOWED, "Метод не поддерживается");
+            return createHtmlMessage (HttpStatus.METHOD_NOT_ALLOWED, "Метод не поддерживается");
         }
     }
 
@@ -48,10 +53,15 @@ public abstract class MethodHandler {
     protected HttpResponse methodsHandle (MethodHandler methodHandler, HttpRequest httpRequest) {
         for (Method method : methodHandler.getClass ().getDeclaredMethods ()) {
             try {
+                HttpResponse httpResponse;
                 UrlRequest urlRequest = method.getAnnotation (UrlRequest.class);
                 if (urlRequest != null && urlRequest.value ().equals (httpRequest.getUrl ())) {
                     method.setAccessible (true);
-                    HttpResponse httpResponse = ( HttpResponse ) method.invoke (this, httpRequest);
+                    if (method.getParameterTypes ().length <= 0){
+                        httpResponse = ( HttpResponse ) method.invoke (this);
+                    } else {
+                        httpResponse = ( HttpResponse ) method.invoke (this, httpRequest);
+                    }
                     method.setAccessible (false);
                     return httpResponse;
                 }
@@ -59,10 +69,10 @@ public abstract class MethodHandler {
                 e.printStackTrace ();
             }
         }
-        return createMessage (HttpStatus.NOT_FOUND, "Ссылка не найдена");
+        return createHtmlMessage (HttpStatus.NOT_FOUND, "Ссылка не найдена");
     }
 
-    protected HttpResponse createMessage (HttpStatus httpStatus, String msg) {
+    protected HttpResponse createHtmlMessage (HttpStatus httpStatus, String msg) {
 
         byte[] body = HtmlPage.createBilder ()
                 .withPath (fileService.getPath ("message-page.html"))
@@ -82,6 +92,18 @@ public abstract class MethodHandler {
                 .withStatus (HttpStatus.OK)
                 .withContentType (ContentType.HTML)
                 .withBody (fileService.getBytes (pageName + ".html"))
+                .build ();
+    }
+
+    protected HttpResponse createJsonMessage (HttpStatus status, String message) {
+        HashMap<String, String> json = new HashMap<> () {{
+            put ("message", message);
+        }};
+        byte[] body = jsonSerializer.serialize (json).getBytes (StandardCharsets.UTF_8);
+        return HttpResponse.createBuilder ()
+                .withStatus (HttpStatus.NOT_FOUND)
+                .withContentType (ContentType.JSON)
+                .withBody (body)
                 .build ();
     }
 
