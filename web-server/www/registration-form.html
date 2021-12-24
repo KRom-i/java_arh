@@ -3,30 +3,10 @@
 <head>
     <meta charset=UTF-8">
     <title>WEB server</title>
-    <style>
-
-        .reg_form {
-            display: flex;
-            flex-direction: column;
-            max-width: 350px;
-            background: #a1a1a1;
-            border-radius: 10px;
-        }
-
-        .reg_form_item {
-            margin: 5px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }
-
-        .reg_form_item input {
-            min-width: 250px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<a href="/">Главная страница</a>
 <h2>Регистрация нового пользователя</h2>
 <form class="reg_form" action="/registration" method="post" enctype="text/plain">
     <div class="reg_form_item">
