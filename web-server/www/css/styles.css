@@ -6,6 +6,11 @@ i {
     color: #5353ff;
 }
 
+img{
+    border-radius: 25px;
+    width: 50px;
+}
+
 .reg_form {
     display: flex;
     flex-direction: column;
