@@ -1,10 +1,15 @@
 package ru.geekbrains.handler.method;
 
+import ru.geekbrains.entity.User;
 import ru.geekbrains.request.HttpRequest;
 import ru.geekbrains.request.RequestMethod;
 import ru.geekbrains.response.ContentType;
 import ru.geekbrains.response.HttpResponse;
 import ru.geekbrains.response.HttpStatus;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.List;
 
 @Handle(method = RequestMethod.GET, order = 1)
 public class MethodHandlerGet extends MethodHandler {
@@ -23,13 +28,30 @@ public class MethodHandlerGet extends MethodHandler {
 
 
     @UrlRequest("/")
-    private HttpResponse index (HttpRequest httpRequest) {
+    private HttpResponse index () {
         return createHtmlPage ("index");
     }
 
     @UrlRequest("/registration")
-    private HttpResponse registration (HttpRequest httpRequest) {
+    private HttpResponse registration () {
         return createHtmlPage ("registration-form");
+    }
+
+    @UrlRequest("/users")
+    private HttpResponse getUsersPage () {
+        return createHtmlPage ("users-page");
+    }
+
+    @UrlRequest("/api/users")
+    private HttpResponse getUsers (HttpRequest httpRequest) {
+        List<User> users = userRepository.findAll ();
+        System.out.println (users);
+        byte[] body = jsonSerializer.serialize (users).getBytes(StandardCharsets.UTF_8);
+        return HttpResponse.createBuilder ()
+                .withStatus (HttpStatus.OK)
+                .withContentType (ContentType.JSON)
+                .withBody (body)
+                .build ();
     }
 
     private HttpResponse fileHandle (HttpRequest httpRequest) {

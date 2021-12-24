@@ -23,7 +23,10 @@ public class MethodHandlerPost extends MethodHandler {
 
     @UrlRequest("/registration")
     private HttpResponse registration (HttpRequest httpRequest) {
-        User user = (User) entityParser.parse (httpRequest.getBody (), User.class);
+        User user = ( User ) entityParser.parse (httpRequest.getBody (), User.class);
+        userRepository.beginTransaction ();
+        userRepository.insert (user);
+        userRepository.commitTransaction ();
 
         byte[] body = HtmlPage.createBilder ()
                 .withPath (fileService.getPath ("user-info.html"))
