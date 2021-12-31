@@ -1,0 +1,9 @@
+.todo-item{
+    margin: 5px;
+    display: flex;
+}
+
+.todo-item.span{
+    flex: 1;
+}
+
